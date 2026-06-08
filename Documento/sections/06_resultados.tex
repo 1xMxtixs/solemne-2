@@ -1,0 +1,104 @@
+\section{Resultados Obtenidos}
+
+Luego de la ejecución de la metaheurística \textit{Simulated Annealing}, se logro determinar una solución que cumpla con las demandas solicitadas por las estaciones de servicio a su vez que respete las restricciones dadas, a lo largo de la ejecución se fue transformando la solución inicial usando movimientos vecinos para lograr llegar a la solucion final.
+
+\subsection{Configuración Experimental}
+
+Las pruebas fueron realizadas utilizando los siguientes parámetros:
+
+\begin{itemize}
+\item Temperatura inicial: $T_0 = 1000$.
+\item Temperatura final: $T_f = 0.01$.
+\item Factor de enfriamiento: $\alpha = 0.95$.
+\item Iteraciones por temperatura: $100$.
+\item Semilla aleatoria: $64$.
+\end{itemize}
+
+La solución inicial fue generada mediante el procedimiento constructivo descrito anteriormente y posteriormente mejorada a través de los movimientos vecinos definidos para la exploración del espacio de búsqueda.
+
+\subsection{Mejor Solución Encontrada}
+
+La mejor solución obtenida por la metaheurística presentó un valor de función objetivo igual a:
+
+\begin{equation}
+f(S^*) = 230 + 900 + 0 + 0 = 1130
+\end{equation}
+
+donde:
+
+\begin{itemize}
+\item Costo por distancia: $C_{dist}(S^*) = 230$.
+\item Costos fijos de utilización de camiones: $C_{fijo}(S^*) = 900$.
+\item Penalización por demanda no satisfecha: $C_{shortage}(S^*) = 0$.
+\item Penalización por restricciones: $P_{inf}(S^*) = 0$.
+\end{itemize}
+
+La distribución obtenida para los camiones fue la siguiente:
+
+\[
+R_{T1} = [3]
+\qquad
+R_{T2} = [4,2,1]
+\]
+
+En esta solución, el camión $T1$ abastece la estación 3, mientras que el camión $T2$ abastece las estaciones 4, 2 y 1.
+
+La asignación de combustibles a los compartimentos fue:
+
+\begin{table}[H]
+\centering
+\caption{Asignación de productos a compartimentos}
+\label{tab:compartimentos}
+\begin{tabular}{c|cc}
+\toprule
+Camión & Compartimento & Producto \\
+\midrule
+T1 & C0 & Regular \\
+T1 & C1 & Diésel \\
+T2 & C0 & DIésel \\
+T2 & C1 & Regular \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Asimismo, las cantidades entregadas a cada estación se resumen en la Tabla \ref{tab:entregas}.
+
+\begin{table}[H]
+\centering
+\caption{Cantidades entregadas por estación}
+\label{tab:entregas}
+\begin{tabular}{c|ccc}
+\toprule
+Estación & Regular (L) & Diésel (L) & Shortage (L) \\
+\midrule
+1 & 3000 & 2000 & 0 \\
+2 & 4000 & 1500 & 0 \\
+3 & 2500 & 3000 & 0 \\
+4 & 1000 & 2500 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Validación de Restricciones}
+
+La mejor solución obtenida fue sometida al proceso de validación descrito previamente. Los resultados indicaron que:
+
+\begin{itemize}
+\item Todas las rutas comienzan y terminan en el depósito.
+\item Ninguna estación fue atendida por más de un camión.
+\item No se excedieron las capacidades máximas de los compartimentos.
+\item Cada compartimento transportó un único tipo de combustible.
+\item Se respetó el límite máximo de diferencia entre \textit{fill ratios}.
+\item Las ventanas de tiempo fueron satisfechas.
+\item La demanda fue completamente satisfecha (o el shortage fue correctamente contabilizado).
+\end{itemize}
+
+Por lo tanto, la solución obtenida puede considerarse operacionalmente factible y representa la mejor alternativa encontrada por la metaheurística dentro de las condiciones evaluadas.
+
+\subsection{Análisis de Resultados}
+
+Los resultados obtenidos muestran que la metaheurística de \textit{Simulated Annealing} logra otorgar soluciones de calidad que responde a las demandas de combustible respetando restricciones, esto dado a que pudo encontrar la combinación de asignación de compartimientos, carga inicial y rutas para los camiones que tuviese el menor costo operacional posible.
+
+La factibilidad de la solución se logro tras comprobar que esta cumpliese con las restricciones del problema de distribución de combustible, logrando un equilibrio entre la minimización de costes y cumplimiento de restricciones.
+
+En conclusión, la metaheurística propuesta logra ser una alternativa adecuada para revolver el problema cuando los metodos exactos resultan computacionalmente complejos en diversas instancias del problema.

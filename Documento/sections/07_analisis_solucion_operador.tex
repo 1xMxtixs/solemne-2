@@ -1,0 +1,219 @@
+\section{Análisis de la Solución Propuesta por el Operador}
+
+En esta sección se analiza la solución propuesta por el operador para el escenario determinista. Esta solución considera las siguientes rutas:
+
+\begin{equation*}
+R_{T1} = [1,3], \qquad R_{T2} = [2,4]
+\end{equation*}
+
+Es decir, el camión $T1$ realiza la ruta Depósito->Estación 1->Estación 3->Depósito, mientras que el camión $T2$ recorre la ruta Depósito->Estación 2->Estación 4->Depósito. El operador declara un costo de distancia igual a \$260 y shortage igual a cero. A continuación se verifica la factibilidad de dicha solución.
+
+\subsection{Verificación de Capacidad de Compartimentos}
+
+Para el camión $T1$, que visita las estaciones 1 y 3, las demandas totales son:
+
+\begin{align*}
+Regular_{T1} &= 3000 + 2500 = 5500 \text{ L} \\
+Diesel_{T1} &= 2000 + 3000 = 5000 \text{ L}
+\end{align*}
+
+Considerando que en $T1$ el compartimento $C0$ transporta Regular y $C1$ transporta Diésel, se obtiene:
+
+\begin{align*}
+C0_{T1} &: 5500 \leq 8000 \\
+C1_{T1} &: 5000 \leq 7000
+\end{align*}
+
+Por lo tanto, el camión $T1$ cumple las restricciones de capacidad.
+
+Para el camión $T2$, que visita las estaciones 2 y 4, las demandas totales son:
+
+\begin{align*}
+Regular_{T2} &= 4000 + 1000 = 5000 \text{ L} \\
+Diesel_{T2} &= 1500 + 2500 = 4000 \text{ L}
+\end{align*}
+
+Considerando que en $T2$ el compartimento $C0$ transporta Diésel y $C1$ transporta Regular, se obtiene:
+
+\begin{align*}
+C0_{T2} &: 4000 \leq 6000 \\
+C1_{T2} &: 5000 \leq 9000
+\end{align*}
+
+Por lo tanto, el camión $T2$ también cumple las restricciones de capacidad.
+
+\begin{table}[H]
+\centering
+\caption{Verificación de capacidad de la solución del operador}
+\begin{tabular}{ccccc}
+\toprule
+Camión & Compartimento & Producto & Carga requerida (L) & Capacidad (L) \\
+\midrule
+T1 & C0 & Regular & 5500 & 8000 \\
+T1 & C1 & Diésel & 5000 & 7000 \\
+T2 & C0 & Diésel & 4000 & 6000 \\
+T2 & C1 & Regular & 5000 & 9000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Aunque las capacidades se cumplen satisfactoriamente, es posible observar que los \textit{fill ratios} declarados por el operador no coinciden realmente con las cargas requeridas por las rutas. Por ejemplo, para $T1$, el fill ratio para $C0$ debería ser $5500/8000 = 68.75\%$, no $62.5\%$.
+
+\subsection{Verificación de Estabilidad de Carga}
+
+La estabilidad de carga exige que la diferencia entre los \textit{fill ratios} de los compartimentos de un mismo camión no supere $\Delta = 0.30$ en ningún instante de la ruta.
+
+Para el camión $T1$, los fill ratios son:
+
+\begin{table}[H]
+\centering
+\caption{Fill ratios del camión T1}
+\begin{tabular}{cccc}
+\toprule
+Instante & Fill ratio C0 & Fill ratio C1 & Diferencia \\
+\midrule
+Salida depósito & $5500/8000 = 0.6875$ & $5000/7000 = 0.7143$ & 0.0268 \\
+Después Est. 1 & $2500/8000 = 0.3125$ & $3000/7000 = 0.4286$ & 0.1161 \\
+Después Est. 3 & $0/8000 = 0$ & $0/7000 = 0$ & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Por lo tanto, el camión $T1$ cumple la restricción de estabilidad.
+
+Para el camión $T2$, los fill ratios son:
+
+\begin{table}[H]
+\centering
+\caption{Fill ratios del camión T2}
+\begin{tabular}{cccc}
+\toprule
+Instante & Fill ratio C0 & Fill ratio C1 & Diferencia \\
+\midrule
+Salida depósito & $4000/6000 = 0.6667$ & $5000/9000 = 0.5556$ & 0.1111 \\
+Después Est. 2 & $2500/6000 = 0.4167$ & $1000/9000 = 0.1111$ & 0.3056 \\
+Después Est. 4 & $0/6000 = 0$ & $0/9000 = 0$ & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+En el caso de $T2$, después de atender la estación 2, la diferencia entre fill ratios es:
+
+\begin{equation*}
+|0.4167 - 0.1111| = 0.3056
+\end{equation*}
+
+Dado que $0.3056 > 0.30$, la solución propuesta por el operador incumple de manera leve la restricción de estabilidad de carga para el camión $T2$.
+
+\subsection{Verificación de Ventanas de Tiempo}
+
+
+La velocidad de los camiones es de 60 km/h, por lo que cada kilómetro equivale aproximadamente a un minuto de viaje. Además, el tiempo de servicio en cada estación es de 30 minutos.
+
+Para el camión $T1$, cuya hora de salida es 05:00, se obtiene:
+
+\begin{table}[H]
+\centering
+\caption{Verificación de ventanas de tiempo para T1}
+\begin{tabular}{ccccc}
+\toprule
+Tramo & Llegada & Inicio servicio & Ventana & Estado \\
+\midrule
+Depósito--Est. 1 & 05:20 & 06:00 & [06:00--10:00] & Cumple con espera \\
+Est. 1--Est. 3 & 06:55 & 08:00 & [08:00--14:00] & Cumple con espera \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El cálculo anterior es obtenido considerando que el camión $T1$ sale a las 05:00 y demora 20 minutos en llegar a la estación 1. Como llega a las 05:20 y la ventana comienza a las 06:00, debe esperar unos 40 minutos. Luego realiza su servicio durante 30 minutos, saliendo a las 06:30. Desde la estación 1 hasta la estación 3 recorre 25 km, por lo que llega a las 06:55. Como la estación 3 comienza a recibir a las 08:00, el camión espera hasta dicha hora.
+
+Para el camión $T2$, cuya hora de salida es 05:30, se obtiene:
+
+\begin{table}[H]
+\centering
+\caption{Verificación de ventanas de tiempo para T2}
+\begin{tabular}{ccccc}
+\toprule
+Tramo & Llegada & Inicio servicio & Ventana & Estado \\
+\midrule
+Depósito--Est. 2 & 06:05 & 07:00 & [07:00--12:00] & Cumple con espera \\
+Est. 2--Est. 4 & 07:45 & 07:45 & [06:00--11:00] & Cumple \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+En este caso, el camión $T2$ sale a las 05:30 y se demora unos 35 minutos en llegar a la estación 2, llegando a las 06:05. Como la ventana comienza a las 07:00, espera hasta esa hora y luego realiza el servicio durante 30 minutos, saliendo a las 07:30. Posteriormente recorre 15 km hacia la estación 4, llegando a las 07:45, lo cual se encuentra dentro de la ventana [06:00--11:00].
+
+Por lo tanto, considerando espera anticipada, la solución del operador cumple las ventanas de tiempo.
+
+\subsection{Verificación del Costo Declarado}
+
+El operador declara un costo de distancia igual a \$260. Sin embargo, al calcular la distancia real recorrida se obtiene:
+
+\begin{align*}
+Distancia_{T1} &= d_{0,1} + d_{1,3} + d_{3,0} \\
+&= 20 + 25 + 15 = 60 \text{ km}
+\end{align*}
+
+\begin{align*}
+Distancia_{T2} &= d_{0,2} + d_{2,4} + d_{4,0} \\
+&= 35 + 15 + 40 = 90 \text{ km}
+\end{align*}
+
+Por lo tanto, la distancia total recorrida es:
+
+\begin{equation*}
+Distancia_{total} = 60 + 90 = 150 \text{ km}
+\end{equation*}
+
+Como el costo por kilómetro es de \$2/km, el costo real por distancia es:
+
+\begin{equation*}
+C_{dist} = 150 \cdot 2 = 300
+\end{equation*}
+
+Además, ambos camiones son utilizados, por lo que se deben considerar los costos fijos:
+
+\begin{equation*}
+C_{fijo} = 500 + 400 = 900
+\end{equation*}
+
+Si se considera que no existe shortage, la penalización por demanda no satisfecha es cero:
+
+\begin{equation*}
+C_{shortage} = 0
+\end{equation*}
+
+Por lo tanto, el costo total real de la solución es:
+
+\begin{equation*}
+C_{total} = 300 + 900 + 0 = 1200
+\end{equation*}
+
+\begin{table}[H]
+\centering
+\caption{Costo real de la solución propuesta por el operador}
+\begin{tabular}{lc}
+\toprule
+Componente & Valor \\
+\midrule
+Distancia T1 & 60 km \\
+Distancia T2 & 90 km \\
+Distancia total & 150 km \\
+Costo por distancia & \$300 \\
+Costo fijo T1 & \$500 \\
+Costo fijo T2 & \$400 \\
+Penalización por shortage & \$0 \\
+\midrule
+Costo total real & \$1200 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Por lo tanto, el costo declarado por el operador es incorrecto. El costo de distancia no corresponde a \$260, sino a \$300. Además, si se consideran los costos fijos de los camiones utilizados, el costo total real asciende a \$1200.
+
+\subsection{Conclusión del Análisis}
+
+A partir de la verificación realizada a la solución obtenida por el operador, se puede concluir que esta misma cumple con las restricciones de capacidad, satisface la demanda total sin shortage y respeta los horarios de atención, ya que los camiones esperan hasta el inicio de su ventana correspondiente.
+
+Sin embargo, la solución presenta inconcistencias destacables. Los fill ratios declarados no coinciden realmente con las cargas reales que son requeridas, el camión $T2$ incumple de manera leve la restricción de estabilidad, ya que alcanza una diferencia de 0.3056, superando el límite permitido de 0.30, y el costo declarado está incorrecto. Considerando una distancia total de 150 km, el costo por distancia corresponde a \$300 y sumando el costo real, asciende a \$1200. Por lo tanto, la solución es parcialmente factible, pero no es completamente válida.
