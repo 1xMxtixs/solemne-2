@@ -127,7 +127,7 @@ Los factores de penalización definidos en el código son:
 *   $\lambda_{\text{capacidad}} = 10.000$
 *   $\lambda_{\text{estabilidad}} = 50.000$
 *   $\lambda_{\text{tiempo}} = 1.000$
-*   $\lambda_{\text{estaciones\_no\_asignadas/duplicadas}} = 100.000$
+*   $\lambda_{\text{estaciones no asignadas / duplicadas}} = 100.000$
 
 ### 3. Operadores de Vecindad
 En cada iteración se selecciona aleatoriamente uno de los siguientes movimientos vecinos:
