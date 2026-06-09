@@ -124,10 +124,17 @@ $$f(S) = C_{\text{dist}}(S) + C_{\text{fijo}}(S) + C_{\text{shortage}}(S) + P_{\
 $$P_{\text{inf}}(S) = \lambda_{\text{cap}} P_{\text{cap}}(S) + \lambda_{\text{est}} P_{\text{est}}(S) + \lambda_{\text{time}} P_{\text{time}}(S) + \lambda_{\text{estaciones}} P_{\text{estaciones}}(S)$$
 
 Los factores de penalización definidos en el código son:
+<<<<<<< HEAD
 *   $\lambda_{\text{capacidad}} = 10.000$
 *   $\lambda_{\text{estabilidad}} = 50.000$
 *   $\lambda_{\text{tiempo}} = 1.000$
 *   $\lambda_{\text{estaciones no asignadas / duplicadas}} = 100.000$
+=======
+* $\lambda_{\text{capacidad}} = 10.000$
+* $\lambda_{\text{estabilidad}} = 50.000$
+* $\lambda_{\text{tiempo}} = 1.000$
+* $\lambda_{\text{estaciones\_no\_asignadas/duplicadas}} = 100.000$
+>>>>>>> e3fba563e66f99b2a5bcd7db0cb17c161d6665f2
 
 ### 3. Operadores de Vecindad
 En cada iteración se selecciona aleatoriamente uno de los siguientes movimientos vecinos:
